@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <DS1307new.h> 
 #include <LiquidCrystal.h>
-// Değişkenler
+r
 uint16_t startAddr = 0x0000;          
 uint16_t lastAddr;                     
 uint16_t TimeIsSet = 0xaa55;    
@@ -135,25 +135,25 @@ void loop()
   switch (RTC.dow)   
   {
     case 1:
-      Serial.print("İng-İng-Ted-Ted-Bio-Bio-Mat-Mat");
+      Serial.print("Ãng-Ãng-Ted-Ted-Bio-Bio-Mat-Mat");
       break;
     case 2:
-      Serial.print("Kim-Kim-Mat-Mat-Cog-Cpg-Fız-Fız");
+      Serial.print("Kim-Kim-Mat-Mat-Cog-Cpg-FÃ½z-FÃ½z");
       break;
     case 3:
-      Serial.print("Muy-Muy-Ted-İng-Reh-Bil-Bed-Bed");
+      Serial.print("Muy-Muy-Ted-Ãng-Reh-Bil-Bed-Bed");
       break;
     case 4:
       Serial.print("Bio-Prj-Bil-Bil-Ta-Ta-Mat-Mat");
       break;
     case 5:
-      Serial.print("Ted-Ted-Ing-Ing-Prj-Dın-Alm-Alm");
+      Serial.print("Ted-Ted-Ing-Ing-Prj-DÃ½n-Alm-Alm");
       break;
     case 6:
-      Serial.print("Dınlen-Ktp Oku");
+      Serial.print("DÃ½nlen-Ktp Oku");
       break;
     case 7:
-      Serial.print("Dınlen-Ktp oku");
+      Serial.print("DÃ½nlen-Ktp oku");
       break;
   }
   Serial.println();
