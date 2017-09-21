@@ -1,0 +1,167 @@
+#include <Wire.h>
+#include <DS1307new.h> 
+#include <LiquidCrystal.h>
+// Deðiþkenler
+uint16_t startAddr = 0x0000;          
+uint16_t lastAddr;                     
+uint16_t TimeIsSet = 0xaa55;    
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+void setup()
+{
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+
+  RTC.setRAM(0, (uint8_t *)&startAddr, sizeof(uint16_t));
+
+  RTC.getRAM(54, (uint8_t *)&TimeIsSet, sizeof(uint16_t));
+  if (TimeIsSet != 0xaa55) 
+
+  {
+    RTC.stopClock();
+
+
+
+    RTC.fillByYMD(2015,2,24);
+    RTC.fillByHMS(23,25,0);
+
+    RTC.setTime();
+    TimeIsSet = 0xaa55;
+    RTC.setRAM(54, (uint8_t *)&TimeIsSet, sizeof(uint16_t));
+    RTC.startClock();
+  }
+  else
+  {
+    RTC.getTime();
+  }
+  Serial.println("Tarih Saat Formati" "SS:DD:ss GG-AA-YYY DDD");
+  Serial.println("Her saniye alt satira gecerek o anki zamani gosterir.");
+  Serial.println();
+}
+void loop()
+{
+  RTC.getTime(); 
+
+  if (RTC.hour < 10)                  
+  {
+    lcd.setCursor(0, 0); 
+    Serial.print("0");
+    lcd.print("0");
+    Serial.print(RTC.hour, DEC);
+    lcd.print(RTC.hour, DEC);
+  } 
+  else
+  {
+    Serial.print(RTC.hour, DEC);
+    lcd.setCursor(0, 0);
+    lcd.print(RTC.hour, DEC);
+  }
+  Serial.print(":");
+  lcd.setCursor(2, 0);
+  lcd.print(":");
+  
+  if (RTC.minute < 10)
+  {
+    lcd.setCursor(3, 0);
+    lcd.print("0");
+    lcd.print(RTC.minute, DEC);
+    Serial.print("0");
+    Serial.print(RTC.minute, DEC);
+  }
+  else
+  {
+    Serial.print(RTC.minute, DEC);
+    lcd.print(RTC.minute, DEC);
+  }
+  
+  Serial.print(":");
+  //lcd.setCursor(5, 0);
+  //lcd.print(":");
+  
+  if (RTC.second < 10) 
+  {
+   /* lcd.setCursor(6, 0);    
+    lcd.print("0");
+    lcd.print(RTC.second, DEC);*/
+    Serial.print("RTC.Second, DEC");
+    Serial.print(RTC.second, DEC);
+  }
+  else
+  {
+    Serial.print(RTC.second, DEC);
+   /* lcd.setCursor(6, 0);
+    lcd.print(RTC.second, DEC);*/
+  }
+ 
+  Serial.print(" ");
+  if (RTC.day < 10)                  
+  {
+    lcd.setCursor(6, 0);
+    lcd.print("0");
+    lcd.print(RTC.day, DEC);
+    Serial.print("0");
+    Serial.print(RTC.day, DEC);
+  }
+  else
+  {
+    lcd.setCursor(6, 0);
+    lcd.print(RTC.day, DEC);
+    Serial.print(RTC.day, DEC);
+  }
+  Serial.print("-");
+  lcd.setCursor(8, 0);
+  lcd.print("-");
+  if (RTC.month < 10)              
+  {
+    lcd.setCursor(9, 0);
+    lcd.print("0");
+    lcd.print(RTC.month, DEC);
+    Serial.print("0");
+    Serial.print(RTC.month, DEC);
+  }
+  else
+  {
+    lcd.setCursor(9, 0);
+    lcd.print(RTC.month, DEC);
+    Serial.print(RTC.month, DEC);
+  }
+  lcd.setCursor(11, 0);
+  lcd.print("-");
+  Serial.print("-");
+  lcd.setCursor(12, 0);
+  lcd.print(RTC.year, DEC);
+  Serial.print(RTC.year, DEC);   
+  Serial.print(" ");
+  switch (RTC.dow)   
+  {
+    case 1:
+      Serial.print("Ýng-Ýng-Ted-Ted-Bio-Bio-Mat-Mat");
+      break;
+    case 2:
+      Serial.print("Kim-Kim-Mat-Mat-Cog-Cpg-Fýz-Fýz");
+      break;
+    case 3:
+      Serial.print("Muy-Muy-Ted-Ýng-Reh-Bil-Bed-Bed");
+      break;
+    case 4:
+      Serial.print("Bio-Prj-Bil-Bil-Ta-Ta-Mat-Mat");
+      break;
+    case 5:
+      Serial.print("Ted-Ted-Ing-Ing-Prj-Dýn-Alm-Alm");
+      break;
+    case 6:
+      Serial.print("Dýnlen-Ktp Oku");
+      break;
+    case 7:
+      Serial.print("Dýnlen-Ktp oku");
+      break;
+  }
+  Serial.println();
+
+
+  delay(1000);   
+
+
+
+    
+}
